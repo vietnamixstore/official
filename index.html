@@ -27,8 +27,13 @@
   .hero-art{position:relative;min-height:520px;background:var(--lime);overflow:hidden;display:flex;align-items:center;justify-content:center}
   .sunburst{position:absolute;width:430px;height:430px;border:1px solid rgba(23,23,20,.22);border-radius:50%;box-shadow:0 0 0 35px rgba(23,23,20,.04),0 0 0 70px rgba(23,23,20,.04),0 0 0 105px rgba(23,23,20,.04)}
   .hero-shirt{position:relative;width:min(78%,430px);filter:drop-shadow(18px 24px 0 rgba(23,23,20,.13));transform:rotate(-7deg);z-index:1}
+  /* Ảnh chính đầu trang */
+  .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:none}
+  .hero-art.has-photo .hero-photo{display:block}
+  .hero-art.has-photo .hero-shirt,.hero-art.has-photo .sunburst{display:none}
+  .hero-art.has-photo .art-caption{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.55)}
   .sticker{position:absolute;z-index:2;background:var(--red);color:white;border-radius:50%;width:104px;height:104px;display:grid;place-content:center;text-align:center;font-family:'Barlow Condensed',Impact,sans-serif;font-size:19px;font-weight:900;line-height:.95;transform:rotate(12deg);right:7%;top:9%}
-  .art-caption{position:absolute;bottom:17px;left:20px;right:20px;display:flex;justify-content:space-between;font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+  .art-caption{position:absolute;z-index:3;bottom:17px;left:20px;right:20px;display:flex;justify-content:space-between;font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
   .ticker{background:var(--red);color:white;overflow:hidden;white-space:nowrap;padding:13px 0;font-family:'Barlow Condensed',Impact,sans-serif;font-size:25px;font-weight:900;letter-spacing:.05em}
   .ticker span{display:inline-block;margin-right:30px}.ticker b{color:var(--lime);margin:0 12px}
   section.shop{max-width:1400px;margin:auto;padding:78px 5vw 90px}
@@ -40,8 +45,9 @@
   .product{min-width:0}.product-image{position:relative;aspect-ratio:4/4.7;background:#e7e2d7;overflow:hidden;display:grid;place-items:center}
   .product-image.olive{background:#d5d5bb}.product-image.pink{background:#efd5c9}.product-image.blue{background:#cbd8d6}.product-image.yellow{background:#e7e0a5}
   .product-image svg{width:83%;height:88%;transition:transform .35s}.product:hover .product-image svg{transform:scale(1.05) rotate(-2deg)}
-  .tag{position:absolute;left:12px;top:12px;background:var(--paper);padding:7px 9px;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-  .quick-add{position:absolute;bottom:12px;left:12px;right:12px;border:0;background:var(--ink);color:white;padding:12px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:0;transform:translateY(5px);transition:.2s}
+  .product-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.product:hover .product-image img{transform:scale(1.05)}
+  .tag{position:absolute;z-index:2;left:12px;top:12px;background:var(--paper);padding:7px 9px;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+  .quick-add{position:absolute;z-index:2;bottom:12px;left:12px;right:12px;border:0;background:var(--ink);color:white;padding:12px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:0;transform:translateY(5px);transition:.2s}
   .product:hover .quick-add{opacity:1;transform:translateY(0)}.product-meta{display:flex;justify-content:space-between;gap:10px;margin-top:13px;font-size:12px;font-weight:800}.product-desc{color:var(--muted);font-size:11px;margin-top:5px}
   .price{white-space:nowrap}.feature{background:var(--ink);color:var(--paper);padding:70px 5vw}
   .feature-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
@@ -74,8 +80,9 @@
       <p class="hero-copy">Chất liệu đời thường, câu chuyện Việt Nam. Vietnamix đưa cảm hứng từ văn hoá, làng nghề và nhịp sống Việt lên chiếc áo bạn mặc mỗi ngày.</p>
       <div class="actions"><a class="btn" href="#shop">Khám phá bộ sưu tập <span>↘</span></a><a class="btn dark" href="#story">Câu chuyện của chúng tôi</a></div>
     </div>
-    <div class="hero-art">
+    <div class="hero-art" id="heroArt">
       <div class="sunburst"></div>
+      <img class="hero-photo" id="heroPhoto" alt="Vietnamix — Mặc chất Việt">
       <div class="sticker">CHẤT<br>VIỆT<br>THẾ HỆ MỚI</div>
       <svg class="hero-shirt" viewBox="0 0 420 460" role="img" aria-label="Áo phông Vietnamix minh hoạ">
         <path d="M115 42 L163 22 Q210 55 257 22 L305 42 L392 105 L345 177 L303 153 L303 425 Q210 448 117 425 L117 153 L75 177 L28 105 Z" fill="#f8f6ef" stroke="#171714" stroke-width="3" stroke-linejoin="round"/>
@@ -111,26 +118,42 @@
 <footer><div class="footer-inner"><div class="footer-logo">VIETNAMIX</div><div class="footer-note">Mặc chất Việt · Kể chuyện theo cách của bạn</div><div class="footer-note">© 2026 VIETNAMIX</div></div></footer>
 <div class="cart-panel" id="cartPanel"><div class="cart-top"><strong>Giỏ hàng của bạn</strong><button class="close" id="closeCart" aria-label="Đóng">×</button></div><div class="cart-items" id="cartItems"><p class="empty">Bạn chưa chọn sản phẩm nào.</p></div><div class="cart-total"><span>Tạm tính</span><span id="total">0₫</span></div><button class="btn dark" style="width:100%;justify-content:space-between;margin-top:14px" id="checkout">Đặt hàng qua tin nhắn <span>↗</span></button><p style="font-size:10px;color:var(--muted);margin:10px 0 0">Bản demo giao diện — hãy cập nhật thông tin liên hệ và phương thức thanh toán trước khi bán hàng.</p></div>
 <script>
+/* =====================================================
+   ẢNH CHÍNH ĐẦU TRANG (HERO)
+   Muốn đổi ảnh khác: upload ảnh lên GitHub cùng thư mục
+   với index.html rồi sửa tên file bên dưới.
+   Nếu file chưa có thì web tự hiện hình áo minh hoạ cũ.
+   ===================================================== */
+const HERO_IMAGE = 'hero.jpg';
+
+/* =====================================================
+   ẢNH 8 ÁO — tên file lấy từ repo GitHub của bạn
+   Muốn đổi ảnh áo nào: sửa tên ở dòng img: của áo đó.
+   ===================================================== */
 const products = [
- {id:1,name:'Di Sản Mới',desc:'Áo phông graphic · Trắng kem',price:299000,color:'',tag:'BESTSELLER',category:'culture',art:'heritage'},
- {id:2,name:'Lúa Nước Club',desc:'Áo phông graphic · Xanh olive',price:299000,color:'olive',tag:'CULTURE SERIES',category:'culture',art:'rice'},
- {id:3,name:'Everyday Vietnam',desc:'Áo phông basic · Hồng đất',price:259000,color:'pink',tag:'DAILY UNIFORM',category:'daily',art:'daily'},
- {id:4,name:'Tap Your Story',desc:'Áo phông NFC · Xanh khói',price:349000,color:'blue',tag:'NFC EDITION',category:'nfc',art:'nfc'},
- {id:5,name:'Cẩm Nê Craft',desc:'Áo phông graphic · Vàng nhạt',price:299000,color:'yellow',tag:'VILLAGE STORIES',category:'culture',art:'craft'},
- {id:6,name:'Local Energy',desc:'Áo phông basic · Trắng kem',price:259000,color:'',tag:'EVERYDAY',category:'daily',art:'local'},
- {id:7,name:'NFC After Hours',desc:'Áo phông NFC · Xanh olive',price:349000,color:'olive',tag:'NFC EDITION',category:'nfc',art:'after'},
- {id:8,name:'Roots Run Deep',desc:'Áo phông graphic · Hồng đất',price:299000,color:'pink',tag:'CULTURE SERIES',category:'culture',art:'roots'}
+ {id:1,name:'THANK GOD I'M NOT MADRIDISTA',desc:'Áo phông graphic · Trắng kem',price:299000,color:'',tag:'BESTSELLER',category:'culture',art:'heritage',img:'shirt1.jpg'},
+ {id:2,name:'THE GOAT',desc:'Áo phông graphic · Xanh olive',price:299000,color:'olive',tag:'CULTURE SERIES',category:'culture',art:'rice',img:'ashirt2.jpg'},
+ {id:3,name:'THE BOAT',desc:'Áo phông basic · Hồng đất',price:259000,color:'pink',tag:'DAILY UNIFORM',category:'daily',art:'daily',img:'ashirt3.jpg'},
+ {id:4,name:'NO MONEY NO HONEY',desc:'Áo phông NFC · Xanh khói',price:349000,color:'blue',tag:'NFC EDITION',category:'nfc',art:'nfc',img:'ashirt4.jpg'},
+ {id:5,name:'CUSTOM',desc:'Áo phông graphic · Vàng nhạt',price:299000,color:'yellow',tag:'VILLAGE STORIES',category:'culture',art:'craft',img:'ashirt5.jpg'},
+ {id:6,name:'ANTI RICON RICON CLUB',desc:'Áo phông basic · Trắng kem',price:259000,color:'',tag:'EVERYDAY',category:'daily',art:'local',img:'ashirt6.jpg'},
+ {id:7,name:'CORTIS',desc:'Áo phông NFC · Xanh olive',price:349000,color:'olive',tag:'NFC EDITION',category:'nfc',art:'after',img:'ashirt7.jpg'},
+ {id:8,name:'SAY WALLAHI BRO',desc:'Áo phông graphic · Hồng đất',price:299000,color:'pink',tag:'CULTURE SERIES',category:'culture',art:'roots',img:'ashirt8.jpg'}
 ];
 const artText={heritage:['VIETNAMIX','DI SẢN MỚI'],rice:['LÚA NƯỚC','ROOTS RUN DEEP'],daily:['EVERYDAY','VIETNAM'],nfc:['TAP YOUR','STORY'],craft:['CẨM NÊ','CRAFT CLUB'],local:['LOCAL','ENERGY'],after:['TAP IN','AFTER HOURS'],roots:['GỐC RỄ','KHÔNG LỖI MỐT']};
 function shirtSvg(p){let [a,b]=artText[p.art];let shirt=p.color==='olive'?'#74785b':p.color==='pink'?'#c98f7b':p.color==='blue'?'#758e8d':p.color==='yellow'?'#d4c95e':'#f8f6ef';let ink=(p.color===''||p.color==='yellow')?'#171714':'#f8f6ef';return `<svg viewBox="0 0 300 330" aria-label="${p.name}"><path d="M93 28 L126 15 Q150 37 174 15 L207 28 L267 77 L237 126 L207 110 L207 310 Q150 326 93 310 L93 110 L63 126 L33 77Z" fill="${shirt}" stroke="#171714" stroke-width="2.5" stroke-linejoin="round"/><path d="M126 15 Q150 53 174 15" fill="none" stroke="#171714" stroke-width="2.5"/><path d="M105 145 Q150 132 195 145 L195 208 Q150 222 105 208Z" fill="${p.art==='daily'?'#e83c24':'#171714'}"/><text x="150" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#d9f15b">${a}</text><text x="150" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="800" letter-spacing="1" fill="#fff">${b}</text><path d="M119 197 L132 190 L145 199 L158 190 L171 199 L183 193" fill="none" stroke="${p.art==='daily'?'#fff':'#e83c24'}" stroke-width="2.5"/><text x="150" y="251" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="900" letter-spacing="2" fill="${ink}">MADE OF STORIES</text></svg>`}
+/* Nếu ảnh áo bị lỗi/thiếu file thì tự quay về hình minh hoạ */
+function imgFallback(el,id){el.outerHTML=shirtSvg(products.find(p=>p.id===id))}
 let cart=[];const fmt=n=>n.toLocaleString('vi-VN')+'₫';
-function render(list=products){document.getElementById('products').innerHTML=list.map(p=>`<article class="product"><div class="product-image ${p.color}">${p.tag?`<span class="tag">${p.tag}</span>`:''}${shirtSvg(p)}<button class="quick-add" onclick="addCart(${p.id})">Thêm vào giỏ +</button></div><div class="product-meta"><span>${p.name}</span><span class="price">${fmt(p.price)}</span></div><div class="product-desc">${p.desc}</div></article>`).join('')}
+function render(list=products){document.getElementById('products').innerHTML=list.map(p=>`<article class="product"><div class="product-image ${p.color}">${p.tag?`<span class="tag">${p.tag}</span>`:''}${p.img?`<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="imgFallback(this,${p.id})">`:shirtSvg(p)}<button class="quick-add" onclick="addCart(${p.id})">Thêm vào giỏ +</button></div><div class="product-meta"><span>${p.name}</span><span class="price">${fmt(p.price)}</span></div><div class="product-desc">${p.desc}</div></article>`).join('')}
 function addCart(id){cart.push(products.find(p=>p.id===id));updateCart();document.getElementById('cartPanel').classList.add('open')}
 function updateCart(){document.getElementById('count').textContent=cart.length;document.getElementById('cartItems').innerHTML=cart.length?cart.map((p,i)=>`<div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0"><span>${p.name}<br><small>${fmt(p.price)}</small></span><button onclick="removeCart(${i})" style="border:0;background:none">×</button></div>`).join(''):'<p class="empty">Bạn chưa chọn sản phẩm nào.</p>';document.getElementById('total').textContent=fmt(cart.reduce((s,p)=>s+p.price,0))}
 function removeCart(i){cart.splice(i,1);updateCart()}
 document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter==='all'?products:products.filter(p=>p.category===b.dataset.filter))}));
 document.getElementById('openCart').onclick=()=>document.getElementById('cartPanel').classList.toggle('open');document.getElementById('closeCart').onclick=()=>document.getElementById('cartPanel').classList.remove('open');
-document.getElementById('checkout').onclick=()=>{if(!cart.length){alert('Bạn hãy chọn sản phẩm trước nhé!');return}let msg='Xin chào Vietnamix! Tôi muốn đặt hàng:\\n'+cart.map(p=>'- '+p.name+' — '+fmt(p.price)).join('\\n')+'\\nTổng: '+fmt(cart.reduce((s,p)=>s+p.price,0))+'\\nVui lòng hướng dẫn tôi đặt hàng.';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')};
+document.getElementById('checkout').onclick=()=>{if(!cart.length){alert('Bạn hãy chọn sản phẩm trước nhé!');return}let msg='Xin chào Vietnamix! Tôi muốn đặt hàng:\n'+cart.map(p=>'- '+p.name+' — '+fmt(p.price)).join('\n')+'\nTổng: '+fmt(cart.reduce((s,p)=>s+p.price,0))+'\nVui lòng hướng dẫn tôi đặt hàng.';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')};
+/* Nạp ảnh hero: có file thì hiện ảnh, không có thì giữ hình áo minh hoạ */
+(function(){const t=new Image();t.onload=()=>{document.getElementById('heroPhoto').src=HERO_IMAGE;document.getElementById('heroArt').classList.add('has-photo')};t.src=HERO_IMAGE})();
 render();
 </script>
 </body>
